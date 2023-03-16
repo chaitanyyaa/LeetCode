@@ -1,16 +1,17 @@
 class Solution {
 public:
-    
-    int numberOfSubarrays(vector<int>& a, int k) {
-        int ans=0,sum=0,n=a.size();
-        map<int,int>mp;
-        mp[0]=1;
-        for(int i=0;i<n;i++){
-            sum+=a[i]%2; 
-            if(mp.find(sum-k)!=mp.end())
-                ans+=mp[sum-k];
-            mp[sum]++;
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        int j = 0, odd = 0, count = 0, total = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] & 1) {
+                odd++;
+                if (odd >= k) {
+                    count = 1;
+                    while (!(nums[j++] & 1)) count++;
+                    total += count;
+                }
+            } else if (odd >= k) total += count;
         }
-        return ans;
+        return total;
     }
 };
