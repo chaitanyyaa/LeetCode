@@ -1,23 +1,23 @@
 class Solution {
 public:
     string predictPartyVictory(string senate) {
-        int count = 0, len = 0;
-        while (senate.size() != len) {
-            string s;
-            len = senate.size();
-            for (int i = 0; i < len; i++) {
-                if (senate[i] == 'R') {
-                    if (count++ >= 0) s += 'R';
-                }
-                else if (senate[i] == 'D') {
-                    if (count-- <= 0) s += 'D';
-                }
-            }  
-            swap(s, senate);
+        queue< int> qr , qd;
+
+        int n = senate.length();
+
+        for( int i=0 ; i< n ; i++){
+            (senate[i] == 'R')?qr.push(i):qd.push(i);
         }
-        if (senate[0] == 'R') 
-            return "Radiant";
-        else 
-            return "Dire";               //RDDRDDRD   r =3 d = 5   s = RDDR   
+
+        while(!qr.empty() && !qd.empty()){
+
+            int rid = qr.front();
+            int did = qd.front();
+
+            qr.pop() ,  qd.pop();
+
+            (rid > did)?qd.push(did+n):qr.push(rid+n); // 4 , 3  
+        }
+        return (qr.size()> qd.size())?"Radiant":"Dire";
     }
 };
